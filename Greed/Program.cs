@@ -2,7 +2,11 @@
 
 RollDices greed = new RollDices();
 
-Console.WriteLine(greed.ToRoll());
-Console.WriteLine(greed.ToCalculate());
+for (int i = 0; i < 200; i++)
+{
+    Console.Write(greed.ToRoll());
+    Console.Write(" - ");
+    Console.WriteLine(greed.ToCalculate());
+}
 
 

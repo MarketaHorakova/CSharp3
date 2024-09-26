@@ -8,8 +8,8 @@ namespace Greed
 {
     public class RollDices
     {
-        Random random = new Random();
-        int[] arrayNumbers = new int[5];
+         Random random = new Random();
+        int[] arrayNumbers = new int[6];
         int oneCounter = 0;
         int twoCounter = 0;
         int threeCounter = 0;
@@ -19,6 +19,12 @@ namespace Greed
 
         public string ToRoll()
         {
+            oneCounter = 0;
+            twoCounter = 0;
+            threeCounter = 0;
+            fourCounter = 0;
+            fiveCounter = 0;
+            sixCounter = 0;
             for (int i = 0; i < arrayNumbers.Length; i++)
             {
                 arrayNumbers[i] = random.Next(1, 7);
@@ -52,74 +58,99 @@ namespace Greed
             }
 
             return builder.ToString();
+
         }
 
         public string ToCalculate()
         {
-            string result = "Nothing rolled";
             int resultNumber = 0;
-            if (arrayNumbers[0] == 0)
-            {
-                result = "Nothing to calculate. Roll at first!";
-            }
 
-            switch (oneCounter)
+            if (TreePairs(oneCounter,twoCounter, threeCounter, fourCounter, fiveCounter, sixCounter))
             {
-                case 1:
-                    resultNumber += 100;
-                    break;
-                case 2:
-                    resultNumber += 200;
-                    break;
-                case 3:
-                    resultNumber += 1000;
-                    break;
-                case 4:
-                    resultNumber += 1100;
-                    break;
-                case 5:
-                    resultNumber += 1200;
-                    break;
+                resultNumber = 800;
             }
+            else if (oneCounter == 1 && twoCounter == 1 && threeCounter == 1 && fourCounter == 1 && fiveCounter == 1 && sixCounter == 1)
+            {
+                resultNumber = 1200;
+            }
+            else
+            {
+                resultNumber += (Counter(oneCounter, 1000) + OneFiveCounter(oneCounter, 100));
+                resultNumber += Counter(twoCounter, 200);
+                resultNumber += Counter(threeCounter, 300);
+                resultNumber += Counter(fourCounter, 400);
+                resultNumber += (Counter(fiveCounter, 500) + OneFiveCounter(fiveCounter, 50));
+                resultNumber += Counter(sixCounter, 600);
 
-            if (twoCounter > 2)
-            {
-                resultNumber += 200;
-            }
-            if (threeCounter > 2)
-            {
-                resultNumber += 300;
-            }
-            if (fourCounter > 2)
-            {
-                resultNumber += 400;
-            }
-            switch (fiveCounter)
-            {
-                case 1:
-                    resultNumber += 50;
-                    break;
-                case 2:
-                    resultNumber += 100;
-                    break;
-                case 3:
-                    resultNumber += 500;
-                    break;
-                case 4:
-                    resultNumber += 550;
-                    break;
-                case 5:
-                    resultNumber += 600;
-                    break;
-            }
-
-
-            if (sixCounter > 2)
-            {
-                resultNumber += 600;
             }
             return "Win points: " + resultNumber.ToString();
 
+        }
+
+        private int Counter(int rolledDiceNumber, int dicePointValue)
+        {
+            int counterNumber = 0;
+            switch (rolledDiceNumber)
+            {
+                case 6:
+                    counterNumber += 8 * dicePointValue;
+                    break;
+                case 5:
+                    counterNumber += 4 * dicePointValue;
+                    break;
+                case 4:
+                    counterNumber += 2 * dicePointValue;
+                    break;
+                case 3:
+                    counterNumber += 1 * dicePointValue;
+                    break;
+            }
+            return counterNumber;
+        }
+
+        private int OneFiveCounter(int rolledDiceNumber, int dicePointValue)
+        {
+            int counterNumber = 0;
+            switch (rolledDiceNumber)
+            {
+                case 1:
+                    counterNumber += dicePointValue;
+                    break;
+                case 2:
+                    counterNumber += 2*dicePointValue;
+                    break;
+            }
+            return counterNumber;
+        }
+
+        private bool TreePairs(int one, int two, int three, int four, int five, int six)
+        {
+            int pairNumber = 0;
+            if (one == 2)
+            {
+                pairNumber += 1;
+            }
+            if (two == 2)
+            {
+                pairNumber += 1;
+            }
+            if (three == 2)
+            {
+                pairNumber += 1;
+            }
+            if (four == 2)
+            {
+                pairNumber += 1;
+            }
+            if (five == 2)
+            {
+                pairNumber += 1;
+            }
+            if (six == 2)
+            {
+                pairNumber += 1;
+            }
+            return (pairNumber == 3);
         }
 
     }
